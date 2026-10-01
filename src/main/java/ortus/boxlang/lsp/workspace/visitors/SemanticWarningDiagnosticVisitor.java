@@ -132,7 +132,24 @@ public class SemanticWarningDiagnosticVisitor extends SourceCodeVisitor {
 	}
 
 	@Override
+
 	public List<CodeAction> getCodeActions() {
+		List<CodeAction> actions = new ArrayList<>();
+
+		for (Map.Entry<String, ImportNode> entry : imports.entrySet()) {
+			String importedName = entry.getKey();
+			ImportNode node = entry.getValue();
+
+			// If this import is unused
+			if (!usedIdentifiers.contains(importedName)) {
+				actions.add(buildRemoveImportAction(node));
+			}
+		}
+
+		return actions;
+}
+
+
 		return List.of();
 	}
 
