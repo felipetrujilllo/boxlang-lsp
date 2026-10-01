@@ -136,6 +136,7 @@ public class SemanticWarningDiagnosticVisitor extends SourceCodeVisitor {
 	public List<CodeAction> getCodeActions() {
 		List<CodeAction> actions = new ArrayList<>();
 
+		// Loops through list of usedidentifiers and checks if its in imports 
 		for (Map.Entry<String, ImportNode> entry : imports.entrySet()) {
 			String importedName = entry.getKey();
 			ImportNode node = entry.getValue();
@@ -145,12 +146,8 @@ public class SemanticWarningDiagnosticVisitor extends SourceCodeVisitor {
 				actions.add(buildRemoveImportAction(node));
 			}
 		}
-
+		// Return the list of code actions for unused imports
 		return actions;
-}
-
-
-		return List.of();
 	}
 
 	// ============ Empty Catch Block Detection ============
