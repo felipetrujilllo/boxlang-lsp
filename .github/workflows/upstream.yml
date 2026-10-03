@@ -22,14 +22,9 @@ jobs:
               run: git fetch upstream
 
             - name: Merge upstream changes
-              run: |
-                git switch main
-                git merge upstream/main
+              run: git merge upstream/development --no-edit
 
             - name: Push updated main to origin
-              run: git push origin main
-
-            - name: Push feature branch
-              run: git push origin issue1fix
+              run: git push origin development
 
     
