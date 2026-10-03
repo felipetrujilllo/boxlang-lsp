@@ -14,6 +14,9 @@ jobs:
               uses: actions/checkout@v4
               with:
                 fetch-depth: 0
+                
+            - name: Add upstream remote
+              run: git remote add upstream https://github.com/ortus-boxlang/boxlang-lsp.git
 
             - name: Fetch upstream
               run: git fetch upstream
