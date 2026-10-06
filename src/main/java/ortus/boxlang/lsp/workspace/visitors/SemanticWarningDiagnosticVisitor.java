@@ -557,9 +557,11 @@ public class SemanticWarningDiagnosticVisitor extends SourceCodeVisitor {
 				    UnusedImportRule.ID
 				);
 				diagnostic.setTags( List.of( DiagnosticTag.Unnecessary ) );
+				// Preserve identity when the client returns this diagnostic in a code-action request.
 				diagnostic.setData( Map.of( "id", UUID.randomUUID().toString() ) );
 				diagnostics.add( diagnostic );
 
+				// Wildcard imports affect multiple symbols and are outside this statement-level fix.
 				if ( !isWildcardImport( importNode ) && filePath != null ) {
 					CodeAction action = new CodeAction( "Remove unused import" );
 					action.setKind( CodeActionKind.QuickFix );
