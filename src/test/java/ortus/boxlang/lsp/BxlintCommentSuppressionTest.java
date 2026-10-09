@@ -167,7 +167,6 @@ public class BxlintCommentSuppressionTest extends BaseTest {
 		                          }
 		                          """;
 
-
 		Path	suppressedFile	= createTestFile( "BxlintDisableForClass.bx", suppressedCode );
 		Path	controlFile		= createTestFile( "BxlintDisableForClassControl.bx", controlCode );
 		index.indexFile( suppressedFile.toUri() );
@@ -204,23 +203,23 @@ public class BxlintCommentSuppressionTest extends BaseTest {
 	}
 
 	@Test
-	void testBxlintDisableNextLine() throws Exception{
-		String code ="""
-				class{
-					function demo() {
-					// bxlint-disable-next-line unusedVariable
-						suppressed = 1;
-						reported = 2;
-					}
-						}
-				""";
-				Path	testFile	= createTestFile( "testBxlintDisableNextLine.bx", code );
-				index.indexFile( testFile.toUri() );
-				List<Diagnostic> diagnostics = ProjectContextProvider.getInstance().getFileDiagnostics( testFile.toUri() );
-				assertNotNull( diagnostics );
+	void testBxlintDisableNextLine() throws Exception {
+		String	code		= """
+		                      class{
+		                      	function demo() {
+		                      	// bxlint-disable-next-line unusedVariable
+		                      		suppressed = 1;
+		                      		reported = 2;
+		                      	}
+		                      		}
+		                      """;
+		Path	testFile	= createTestFile( "testBxlintDisableNextLine.bx", code );
+		index.indexFile( testFile.toUri() );
+		List<Diagnostic> diagnostics = ProjectContextProvider.getInstance().getFileDiagnostics( testFile.toUri() );
+		assertNotNull( diagnostics );
 
-				assertWithMessage( diagnosticSummary( diagnostics ) ).that( hasDiagnostic( diagnostics, "unusedVariable", 3 ) ).isFalse();
-				assertWithMessage( diagnosticSummary( diagnostics ) ).that( hasDiagnostic( diagnostics, "unusedVariable", 4 ) ).isTrue();
+		assertWithMessage( diagnosticSummary( diagnostics ) ).that( hasDiagnostic( diagnostics, "unusedVariable", 3 ) ).isFalse();
+		assertWithMessage( diagnosticSummary( diagnostics ) ).that( hasDiagnostic( diagnostics, "unusedVariable", 4 ) ).isTrue();
 	}
 
 	private boolean hasDiagnostic( List<Diagnostic> diagnostics, String ruleId, int line ) {

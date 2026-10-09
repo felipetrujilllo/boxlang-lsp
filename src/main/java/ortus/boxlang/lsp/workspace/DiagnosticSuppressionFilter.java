@@ -231,7 +231,8 @@ public class DiagnosticSuppressionFilter {
 				case DIRECTIVE_ENABLE -> closeMatchingSectionDirective( directive, openSections, rules, sourceLines.size() );
 				case DIRECTIVE_DISABLE_FOR_FUNCTION -> addScopedSuppressionRule( rules, astRoot, directive, true );
 				case DIRECTIVE_DISABLE_FOR_CLASS -> addScopedSuppressionRule( rules, astRoot, directive, false );
-				case DIRECTIVE_DISABLE_NEXT_LINE -> {}
+				case DIRECTIVE_DISABLE_NEXT_LINE -> {
+				}
 				case DIRECTIVE_ENABLE_FOR_FUNCTION -> addScopedSuppressionRule( unsuppressionRules, astRoot, directive, true );
 				case DIRECTIVE_ENABLE_FOR_CLASS -> addScopedSuppressionRule( unsuppressionRules, astRoot, directive, false );
 				default -> {
