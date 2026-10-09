@@ -1,17 +1,17 @@
 package ortus.boxlang.lsp;
 
-import static com.google.common.truth.Truth.assertWithMessage;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 
 import org.eclipse.lsp4j.Diagnostic;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+
+import static com.google.common.truth.Truth.assertWithMessage;
 
 import ortus.boxlang.lsp.workspace.ProjectContextProvider;
 import ortus.boxlang.lsp.workspace.index.ProjectIndex;
@@ -167,6 +167,7 @@ public class BxlintCommentSuppressionTest extends BaseTest {
 		                          }
 		                          """;
 
+
 		Path	suppressedFile	= createTestFile( "BxlintDisableForClass.bx", suppressedCode );
 		Path	controlFile		= createTestFile( "BxlintDisableForClassControl.bx", controlCode );
 		index.indexFile( suppressedFile.toUri() );
@@ -200,6 +201,26 @@ public class BxlintCommentSuppressionTest extends BaseTest {
 		assertNotNull( diagnostics );
 
 		assertWithMessage( diagnosticSummary( diagnostics ) ).that( hasDiagnostic( diagnostics, "unusedVariable", 4 ) ).isTrue();
+	}
+
+	@Test
+	void testBxlintDisableNextLine() throws Exception{
+		String code ="""
+				class{
+					function demo() {
+					// bxlint-disable-next-line unusedVariable
+						suppressed = 1;
+						reported = 2;
+					}
+						}
+				""";
+				Path	testFile	= createTestFile( "testBxlintDisableNextLine.bx", code );
+				index.indexFile( testFile.toUri() );
+				List<Diagnostic> diagnostics = ProjectContextProvider.getInstance().getFileDiagnostics( testFile.toUri() );
+				assertNotNull( diagnostics );
+
+				assertWithMessage( diagnosticSummary( diagnostics ) ).that( hasDiagnostic( diagnostics, "unusedVariable", 3 ) ).isFalse();
+				assertWithMessage( diagnosticSummary( diagnostics ) ).that( hasDiagnostic( diagnostics, "unusedVariable", 4 ) ).isTrue();
 	}
 
 	private boolean hasDiagnostic( List<Diagnostic> diagnostics, String ruleId, int line ) {

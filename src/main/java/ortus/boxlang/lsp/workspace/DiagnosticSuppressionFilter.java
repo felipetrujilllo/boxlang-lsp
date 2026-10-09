@@ -34,8 +34,9 @@ public class DiagnosticSuppressionFilter {
 	private static final String		DIRECTIVE_ENABLE_FOR_CLASS		= "enable-for-class";
 	private static final String		DIRECTIVE_DISABLE_FOR_FUNCTION	= "disable-for-function";
 	private static final String		DIRECTIVE_DISABLE_FOR_CLASS		= "disable-for-class";
+	private static final String		DIRECTIVE_DISABLE_NEXT_LINE		= "disable-next-line";
 	private static final Pattern	COMMENT_DIRECTIVE_PATTERN		= Pattern.compile(
-	    "^\\s*(?://\\s*|<!---?\\s*)bxlint(?::|-)(enable-for-function|enable-for-class|disable-for-function|disable-for-class|disable|enable)(?:\\s+(.*?))?\\s*(?:--+>)?\\s*$",
+	    "^\\s*(?://\\s*|<!---?\\s*)bxlint(?::|-)(enable-for-function|enable-for-class|disable-for-function|disable-for-class|disable-next-line|disable|enable)(?:\\s+(.*?))?\\s*(?:--+>)?\\s*$",
 	    Pattern.CASE_INSENSITIVE
 	);
 
@@ -230,6 +231,7 @@ public class DiagnosticSuppressionFilter {
 				case DIRECTIVE_ENABLE -> closeMatchingSectionDirective( directive, openSections, rules, sourceLines.size() );
 				case DIRECTIVE_DISABLE_FOR_FUNCTION -> addScopedSuppressionRule( rules, astRoot, directive, true );
 				case DIRECTIVE_DISABLE_FOR_CLASS -> addScopedSuppressionRule( rules, astRoot, directive, false );
+				case DIRECTIVE_DISABLE_NEXT_LINE -> {}
 				case DIRECTIVE_ENABLE_FOR_FUNCTION -> addScopedSuppressionRule( unsuppressionRules, astRoot, directive, true );
 				case DIRECTIVE_ENABLE_FOR_CLASS -> addScopedSuppressionRule( unsuppressionRules, astRoot, directive, false );
 				default -> {
@@ -366,6 +368,7 @@ public class DiagnosticSuppressionFilter {
 			case DIRECTIVE_ENABLE_FOR_CLASS -> DIRECTIVE_ENABLE_FOR_CLASS;
 			case DIRECTIVE_DISABLE_FOR_FUNCTION -> DIRECTIVE_DISABLE_FOR_FUNCTION;
 			case DIRECTIVE_DISABLE_FOR_CLASS -> DIRECTIVE_DISABLE_FOR_CLASS;
+			case DIRECTIVE_DISABLE_NEXT_LINE -> DIRECTIVE_DISABLE_NEXT_LINE;
 			default -> null;
 		};
 	}
